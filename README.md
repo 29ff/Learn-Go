@@ -71,4 +71,90 @@ go run main.go
 ```
 
  # Variables
- Các biến trong **Go** luôn phải được định nghĩa một cách rõ ràng. **Go** là một 
+ Các biến trong **Go** luôn phải được định nghĩa một cách rõ ràng. Kiểu dữ liệu trong **Go** sẽ được kiểm tra tại thời điểm biến được khai báo. Một biến trong **Go** có thể được khai báo như sau:
+
+```golang
+var a int
+```
+
+Trong trường hợp này, giá trị của biến được đặt bằng 0. Sử dụng cú pháp dưới đây để định nghĩa và khởi tạo một biến với những giá trị bất kỳ:
+
+```golang
+var a = 1
+```
+
+Chúng ta cũng có thể định nghĩa nhiều biến trong cùng một dòng
+
+```golang
+var b, c int = 2, 3
+```
+
+# Data Types
+Giống như những ngôn ngữ khác, **Go** hỗ trợ nhiều kiểu cấu trúc dữ liệu khác nhau. Hãy cùng thử khám phá chúng:
+
+## Number, String, and Boolean
+
+Một số loại kiểu dữ liệu dạng số là int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, uintptr, ...
+
+Kiểu chuỗi trong **Go** được lưu thành một chuỗi các bytes. Nó được khai báo với từ khóa **string**
+
+Một giá trị boolean được lưu trữ và khởi tạo bằng từ khóa **bool**
+
+**Go** cũng hỗ trợ những dữ liệu kiểu số phức tạp, chúng có thể được khởi tạo với từ khóa **complex64** và **complex128**
+
+```golang
+var a bool = true
+var b int = 1
+var c string = 'hello world'
+var d float 32 = 1.222
+var x complex128 = cmplx.Sqrt(-5 * 12i)
+```
+
+## Array, Slices, and Maps
+
+Một mảng là một tập hợp trình tự các phần tử có cùng kiểu dữ liệu. Mảng có một chiều dài cố định được định nghĩa lúc khởi tạo, vì thế, nó không thể mở rộng hơn chiều dài đó. Một mảng có thể được định nghĩa như sau:
+
+```golang
+var a [5]int
+```
+
+Chúng ta cũng có thể khai báo mảng đa chiều như sau:
+
+```golang
+var multiD [2][3]int
+```
+
+Mảng trong **Go** không cung cấp khả năng để lấy ra một mảng con. Để làm điều đó, **Go** có một kiểu dữ liệu gọi là **slice**
+
+Slice lưu trữ một chuỗi các phần tử có thể được mở rộng bất cứ lúc nào. Khai báo slice cũng giống như khai báo array trong **Go**, chỉ khác là khi khai báo slice chúng ta không cần phải khai báo độ dài của slice hay số phần tử, ví dụ:
+
+```golang
+var b []int
+```
+
+Dòng khai báo trên sẽ tạo ra một slice với độ dài bằng 0 và số phần tử bằng 0. Tuy nhiên chúng ta vẫn có thể khai báo slice với độ dài hay số phần tử nhất định bằng câu khai báo dưới đây:
+
+```golang
+numbers := make([]int, 5, 10)
+```
+
+Đoạn code trên sẽ khởi tạo một slice có độ dài là 5 và sức chứa là 10
+
+Chúng ta có thể nghĩ slice như là một lớp của array. Slice sử dụng array như là một cấu trúc cơ bản. Một slice thì sẽ có 3 thành phần: "sức chứa, độ dài, và một con trỏ tới mảng" như hình bên dưới:
+
+![Slice Array](/images/slice_array.png)
+
+Chúng ta có thể tăng sức chứa của slice bằng cách sử dụng chức năng *append* hoặc *copy*. *Append* sẽ thêm giá trị vào cuối slice và sẽ tăng sức chứa của slice nếu cần
+
+```golang
+numbers = append(numbers, 1, 2, 3, 4)
+```
+
+Một cách khác nữa để gia tăng sức chứa của slice là sử dụng chức năng *copy*. Sử dụng *copy* sẽ tạo ra một slice mới với sức chứa lớn hơn slice cũ và sao chép toàn bộ phần tử của slice gốc
+
+```golang
+// create a new slice
+number2 := make([]int, 15)
+// copy the original slice to new slice
+copy(number2, number)
+```
