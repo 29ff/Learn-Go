@@ -1,13 +1,3 @@
-<!-- # Go - Overview
-Go là một ngôn ngữ đa mục đích, được dùng để thiết kế hệ thống. Nó được phát triển bởi Google vào 2007. Nó mạnh mẽ, biên dịch tĩnh và còn hỗ trợ lập trình đồng thời.
-Các chương trình được xây dựng bằng cách sử dụng các packages, để quản lý hiệu quả các dependencies. Việc thực thi Go sử dụng một trình biên dịch truyền thống và liên kiết các model để tạo ra các đoạn mã
-thực thi. Ngôn ngữ Go được giới thiệu vào tháng 11 năm 2009 và được sử dụng trong một số hệ thống của Google.
-
-Features of Go Programming
-=======
-Những tính năng quan trọng nhất của Go được liệt kê bên dưới:
-- Hỗ trợ -->
-
 # Go overview
 Để bắt đầu với **Go** (hay còn gọi là **Golang**), hãy cũng tìm hiểu qua một chút về ngôn ngữ này. **Go** được phát triển bởi các kỹ sư của Google. Nó được phát triển từ năm 2007 và được công bố năm 2009. Phiên bản mã nguồn mở đầu tiên của **Go** được ra mắt vào tháng 3 năm 2012. Theo như những nhà phát triển của **Go** thì nó là một ngôn ngữ lập trình mã nguồn mở giúp dễ dàng xây dựng những phần mềm đơn giản, đáng tin cậy và hiệu quả.
 
@@ -181,4 +171,110 @@ fmt.Println(slice4) // => [3, 4]
 
 slice5 := number2[number2[0]:number2[len(number2)-1]]
 fmt.Println(slice5) // => [2, 3, 4]     
+```
+
+Map là một kiểu dữ liệu trong Go, nó bao gồm nhiều cặp key - value. Chúng ta có thể định nghĩa một Map bằng câu lệnh bên dưới:
+
+```golang
+var m map[string]int
+```
+
+Câu lệnh trên khai báo một biến m là một Map, có các key là kiểu String và value là kiểu Integer. Chúng ta có thể thêm các cặp key - value cho Map bằng câu lệnh sau:
+
+```golang
+// adding key/value
+m ["clearity"] = 2
+m ["simplicity"] = 3
+
+// printing the values
+fmt.Println(m["clearity"]) // => 2
+fmt.Println(m["simplicity"]) // => 3
+```
+
+# Typecasting
+
+Một kiểu dữ liệu có thể được convert sang một kiểu khác bằng cách sử dụng **type casting**. Hãy xem một ví dụ bên dưới:
+
+```golang
+a := 1.1
+b := int(a)
+fmt.Println(b)
+// => 1
+```
+
+Không phải mọi kiểu dữ liệu đều có thể convert được sang kiểu khác. Đảm bảo rằng kiểu dữ có thể chuyển đổi được trước khi thực hiện chuyển đổi
+
+# Conditional Statements
+
+## if else
+
+Đối với câu lệnh điều kiện, chúng ta có thể sử dụng câu lệnh if - else như ví dụ bên dưới:
+
+```golang
+if num := 9; num < 0 {
+  fmt.Println(num, "is negative")
+} else if num < 10 {
+  fmt.Println(num, "has 1 digit")
+} else {
+  fmt.Println(num, "has multiple digits")
+}
+```
+
+## switch case
+Dưới đây là cách sử dụng câu lệnh switch case:
+
+```golang
+i := 2
+switch i {
+  case 1:
+    fmt.Println("one")
+  case 2:
+    fmt.Println("two")
+  default:
+    fmt.Println("none")
+}
+```
+
+# Looping
+
+Go có từ khóa **for** được dùng cho vòng lặp:
+
+```golang
+i := 0
+sum := 0
+for i < 10 {
+  sum += 1
+  i++
+}
+
+fmt.Println(sum)
+```
+
+Vòng lặp vô hạn trong Go:
+
+```golang
+for {
+
+}
+```
+
+# Pointer
+
+Go cung cấp cho chúng ta một thứ gọi là **Pointer**. **Pointer là một nơi để giữ địa chỉ của các giá trị**. Một Pointer được định nghĩa bởi ký hiệu **\***. Một Pointer được xác định theo kiểu của dữ liệu. Ví dụ:
+
+```golang
+var ap *int
+```
+
+Với câu lệnh trên thì biến ap là một pointer cho một kiểu integer. Ký hiệu **&** có thể được sử dụng để lấy địa chỉ của biến:
+
+```golang
+a := 12
+ap = &a
+```
+
+Giá trị của biến được trỏ tới sẽ được gọi bằng cách sử dụng ký hiệu **\***:
+
+```golang
+fmt.Println(*ap) // => 12
 ```
