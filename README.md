@@ -278,3 +278,5 @@ Giá trị của biến được trỏ tới sẽ được gọi bằng cách s�
 ```golang
 fmt.Println(*ap) // => 12
 ```
+
+Pointer 
