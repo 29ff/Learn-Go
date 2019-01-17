@@ -173,11 +173,7 @@ slice5 := number2[number2[0]:number2[len(number2)-1]]
 fmt.Println(slice5) // => [2, 3, 4]     
 ```
 
-<<<<<<< HEAD
-Map là một kiểu dữ liệu trong Go, nó bao gồm nhiều cặp key - value. Chúng ta có thể định nghĩa một Map bằng câu lệnh bên dưới:
-=======
 Map là một kiểu dữ liệu trong **Go**, nó bao gồm các key và value được map với nhau. Chúng ta có thể khai báo map trong **Go** bằng cách sử dụng cú pháp sau:
->>>>>>> fb01d41b6e85d560ad2c91ce6ec0f15f6a142b0d
 
 ```golang
 var m map[string]int
