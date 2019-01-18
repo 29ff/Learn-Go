@@ -260,21 +260,91 @@ for {
 
 # Pointer
 
-Go cung cấp cho chúng ta một thứ gọi là **Pointer**. **Pointer là một nơi để giữ địa chỉ của các giá trị**. Một Pointer được định nghĩa bởi ký hiệu **\***. Một Pointer được xác định theo kiểu của dữ liệu. Ví dụ:
+Khi chúng ta gọi một hàm và truyền tham số vào đó, giá trị của tham số đó sẽ được sao chép vào trong hàm đó, ví dụ:
 
 ```golang
-var ap *int
+package main
+
+import "fmt"
+
+func zero(x int) {
+  x = 0
+}
+
+func main() {
+  x := 5
+  zero(x)
+  fmt.Println(x) // => 5
+}
 ```
 
-Với câu lệnh trên thì biến ap là một pointer cho một kiểu integer. Ký hiệu **&** có thể được sử dụng để lấy địa chỉ của biến:
+Trong đoạn code trên, hàm *zero()* có tác dụng gán cho biến x giá trị là 0. Trong hàm main() chúng ta khai báo một biến x có giá trị là 5 rồi truyền vào hàm *zero()*, sau đó chúng ta in giá trị của biến x ra màn hình, kết quả vẫn bằng 5. Lý do là vì giá trị của biến x trong hàm *main()* được sao chép vào tham số x của riêng hàm *zero()* chứ hàm *zero()* không nhận một biến x nào cả
+
+Tuy nhiên nếu chúng ta muốn hàm *zero()* thao tác trực tiếp luôn với biến x của hàm *main()* thì chúng ta phải dùng đến con trỏ. Ví dụ:
 
 ```golang
-a := 12
-ap = &a
+package main
+
+import "fmt"
+
+func zero(xPrt *int) {
+  *xPtr = 0
+}
+
+func main() {
+  x := 5
+  zero(&x)
+  fmt.Println(x) // => 0
+}
 ```
 
-Giá trị của biến được trỏ tới sẽ được gọi bằng cách sử dụng ký hiệu **\***:
+Con trỏ trong Go là một loại biến đặc biệt, được dùng để lưu trữ địa chỉ của biến khác trong bộ nhớ RAM chứ không lưu trữ một giá trị cụ thể nào. Để khai báo một biến con trỏ thì chúng ta thêm dấu **\*** vào trước tên kiểu dữ liệu. Khi chúng ta in giá trị của một biến con trỏ ra màn hình thì giá trị đó sẽ là một số ở hệ hexa (hệ 16), đó là dịa chỉ bộ nhớ mà con trỏ này đang trỏ tới
+
+Khi gán giá trị cho biến con trỏ, chúng ta cũng phải đưa vào đó một địa chỉ bộ nhớ nào đó chứ không đưa một giá trị vào, để lấy địa chỉ bộ nhớ của một biến thì chúng ta dùng dấu **&** trước tên biến
+
+Ngoài chức năng khai báo biến con trỏ, dấu **\*** còn có tác dụng lấy giá trị của địa chỉ bộ nhớ mà con trỏ đang tham chiếu tới, ngược lại chúng ta cũng có thể gán giá trị cho địa chỉ đó thông qua dấu **\***. Ví dụ:
 
 ```golang
-fmt.Println(*ap) // => 12
+package main
+
+import "fmt"
+
+func main() {
+  var x *int
+  var y int
+
+  y = 0
+  x = &y
+
+  fmt.Println(x)
+  fmt.Println(&x)
+
+  *x = 1
+
+  fmt.Println(*x)
+  fmt.Println(y)
+}
+```
+
+Trong đoạn code trên, chúng ta:
+ - Khai báo x là biến con trỏ kiểu int, y là một biến int bình thường
+ - Gán giá trị cho y là 0
+ - Cho x trỏ tới địa chỉ bộ nhớ của y
+ - Lúc này x sẽ mang giá trị là địa chỉ bộ nhớ của y, chúng ta có thể dùng dấu & để lấy địa chỉ của bộ nhớ y, hoặc dùng dấu **\*** để lấy giá trị tại địa chỉ của y
+ - Gán giá trị cho y (hay giá trị tại địa chỉ bộ nhớ mà x đang tham chiếu tới) là 1 bằng cách dùng dấu **\***
+
+# Functions
+
+Function **main** định nghĩa trong package **main** là nơi bắt đầu của một chương trình Go.
+Ngoài ra chúng ta cũng có thể định nghĩ được những Function khác:
+
+```golang
+func add(a int, b int) int {
+  c := a + b
+  return c
+}
+
+func main() {
+  fmt.Println(add(2, 1)) // => 3
+}
 ```
