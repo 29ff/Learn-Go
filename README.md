@@ -348,3 +348,166 @@ func main() {
   fmt.Println(add(2, 1)) // => 3
 }
 ```
+Như chúng ta có thể thấy ở ví dụ trên, một function trong Go được định nghĩa bằng từ khóa **func** và tiếp theo là tên của function. Những tham số của một function nhận vào được đi kèm với kiểu của tham số đó, và cuối cùng là kiểu của giá trị trả về. Một biến được trả về trong function cũng có thể được xác định trước như sau:
+
+```golang
+func add(a int, b int) (c int) {
+  c = a + b
+  return
+}
+
+func main() {
+  fmt.Println(add(2, 1)) // => 3
+}
+```
+
+Biến c được định nghĩa như là một biến trả về. Vì vậy biến c sẽ tự động trả về mà không cần phải ghi rõ trong câu lệnh return
+
+Chúng ta cũng có thể trả về nhiều giá trị từ một function bằng cách chia cách các giá trị bằng dấu "**,**"
+
+```golang
+func add(a int, b int) (int, string) {
+  c := a + b
+  return c, "successfully added"
+}
+
+func main() {
+  sum, message := add(2, 1)
+  fmt.Println(message)
+  fmt.Println(sum)
+}
+```
+
+# Method, Structs and Interfaces
+
+Go không phải là một ngôn ngữ hướng đối tượng, nhưng với **Structs**, **Interfaces** và **Method** thì nó khiến chúng ta cảm thấy như đang sử dụng một ngôn ngữ hướng đối tượng
+
+## Struct
+
+Một Struct là một kiểu giá trị, một tập hợp các trường khác nhau. Một Struct thường được dùng để nhóm các giá trị lại với nhau. Ví dụ, nếu chúng ta một nhóm các giá trị của một kiểu "Person", chúng ta định nghĩa ra những thuộc tính của "Person" như "name", "age", "gender". Một Struct có thể được định nghĩa như sau:
+
+```golang
+type Person struct {
+  name string
+  age int
+  gender string
+}
+```
+
+Với một struct "Person" đã được định nghĩa như trên, chúng ta có thể khởi tạo một "Person" như sau:
+
+```golang
+// cách 1: khởi tạo một Person bằng các khai báo cả các trường và giá trị của các trường đó
+p = person{name: "Bob", age: 42, gender: "Male"}
+// cách 2: chỉ khai báo các giá trị
+person("Bob", 42, "Male")
+```
+
+Chúng ta có thể dễ dàng lấy giá trị của các trường dựa vào dấu "**.**"
+
+```golang
+p.name // => Bob
+p.age // => 42
+p.gender // => Male
+```
+
+Chúng ta cũng có thể lấy giá trị của các thuộc tính trong Struct bằng Pointer như sau:
+
+```golang
+pp = &person{name: "Bob", age: 42, gender: "Male"}
+pp.name // => Bob
+```
+
+## Methods
+
+Method là một kiểu dữ liệu đặc biệt của function với một **receiver**. Một receiver có thể là một giá trị hoặc cũng có thể là một Pointer. Chúng ta hãy cùng thử tạo một Method với tên là "describe" và có một receiver có type là Person:
+
+```golang
+package main
+import "fmt"
+
+// khởi tạo struct
+type person struct {
+  name string
+  age int
+  gender string
+}
+
+// khởi tạo method
+func (p *person) describe() {
+  fmt.Printf("%v is %v years old", p.name, p.age)
+}
+
+func (p *person) setAge(age int) {
+  p.age = age
+}
+
+func (p person) setName(name string) {
+  p.name = name
+}
+
+func main() {
+  pp := &person{name: "Bob", age: 42, gender: "Male"}
+  pp.describe()
+  // => Bob is 42 years old
+  pp.setAge(45)
+  fmt.Println(pp.age)
+  // => 45
+  pp.getName("Hari")
+  fmt.Println(pp.name)
+  // => Bob
+}
+```
+
+Như chúng ta có thể thấy ở ví dụ trên, method có thể được gọi đến qua dấu "**.**" như "pp.describe". Chúng ta cần chú ý rằng receiver là một Pointer. Với receiver là một Pointer, chúng ta sẽ chuyển một tham chiếu đến giá trị, vì vậy nếu chúng ta thực hiện bất cứ thay đổi nào, nó sẽ thay đổi trực tiếp đến Pointer. Nó cũng sẽ không tạo thêm bất cứ một bản sao mới nào của đối tượng, giúp tiết kiệm bộ nhớ
+
+Chúng ta có thể để ý rằng trong ví dụ trên, giá trị của "age" đã được thay đổi trong khi giá trị của "name" không thay đổi là do phương thức "setName" là một **receiver type** trong khi đó "setAge" là một **pointer type**
+
+## Interfaces
+
+Interface trong Go là một tập hợp các Method. Interfaces giúp chúng ta nhóm những phương thức của một type lại với nhau. Hãy thử tạo một Interfaces có tên là "animal" như sau:
+
+```golang
+type animal interface {
+  description() string
+}
+```
+
+Trong đoạn code trên, "animal" là một kiểu Interface. Bây giờ chúng ta hãy thử tạo 2 đối tượng của "animal" mà có thể thực thi được interface "animal":
+
+```golang
+package main
+import "fmt"
+
+type animal interface {
+  description() string
+}
+
+type cat struct {
+  Type string
+  Sound string
+}
+
+type snake struct {
+  Type string
+  Poisonous bool
+}
+
+func (s snake) description() string {
+  return fmt.Printf("Poisonous: %v", s.Poisonous)
+}
+
+func (c cat) description() string {
+  return fmt.Printf("Sound: %v", c.Sound)
+}
+
+func main() {
+  var a animal
+  a = snake{Poisonous: true}
+  fmt.Println(a.description()) // => Poisonous: true
+  a = cat{Sound: "Meow!!"}
+  fmt.Println(a.description()) // => Sound: Meow!!
+}
+```
+
+Trong function main, chúng ta tạo một biến a có thuộc kiểu animal. Chúng ta khởi tạo 2 struct là "cat" và "snake" thuộc type animal và sử dụng Println để in ra màn hình a.description. Chúng ta thực hiện phương thức description trên "cat" và "snake" khác nhau, vì vậy chúng ta có 2 cách mô tả khác nhau cho 2 con vật
